@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Score Simulator — Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F7F4EE;
+    --ink: #1A1814;
+    --ink-muted: #5C5852;
+    --ink-faint: #A09C95;
+    --accent: #C4421A;
+    --accent-light: #F5E8E3;
+    --border: #E0DBD3;
+    --white: #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.75;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .hero {
+    padding: 80px 0 56px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-tag {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-family: 'Lora', serif;
+    font-size: clamp(26px, 5vw, 42px);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 20px;
+    max-width: 640px;
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--ink-muted);
+    line-height: 1.7;
+    max-width: 580px;
+  }
+
+  .meta-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 40px 0 64px;
+    background: var(--white);
+  }
+
+  .meta-item {
+    padding: 20px 22px;
+    border-right: 1px solid var(--border);
+  }
+  .meta-item:last-child { border-right: none; }
+
+  .meta-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .meta-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .status-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #F0A000;
+    margin-right: 6px;
+    vertical-align: 1px;
+  }
+
+  section { margin-bottom: 64px; }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin-bottom: 14px;
+  }
+
+  h2 {
+    font-family: 'Lora', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 18px;
+    line-height: 1.3;
+  }
+
+  p {
+    color: var(--ink-muted);
+    margin-bottom: 16px;
+    font-size: 16px;
+  }
+
+  p:last-child { margin-bottom: 0; }
+
+  .pull-quote {
+    border-left: 3px solid var(--accent);
+    padding: 8px 0 8px 24px;
+    margin: 36px 0;
+  }
+
+  .pull-quote p {
+    font-family: 'Lora', serif;
+    font-size: 19px;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* PROBLEM GRID */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 28px 0;
+  }
+
+  .problem-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+  }
+
+  .problem-card.full-width {
+    grid-column: 1 / -1;
+    background: var(--accent-light);
+    border-color: #E8C4B8;
+  }
+
+  .card-tag {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .problem-card h4 {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .problem-card p {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .problem-card.full-width p {
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  /* IDEATION LAYERS */
+  .ideation-block { margin: 32px 0; }
+
+  .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .layer-pill {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .layer-pill.system { background: #EDE9E2; color: var(--ink-muted); }
+  .layer-pill.screen { background: var(--accent-light); color: var(--accent); }
+
+  .layer-line { flex: 1; height: 1px; background: var(--border); }
+
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+
+  .principle-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+  }
+
+  .principle-number {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .principle-card h4 {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .principle-card p {
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .screen-level-block {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 24px;
+  }
+
+  .screen-level-block p { font-size: 15px; margin: 0; }
+  .screen-level-block p + p { margin-top: 12px; }
+
+  /* LAYOUTS */
+  .layouts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 28px 0;
+  }
+
+  .layout-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--white);
+  }
+
+  .layout-card.selected {
+    border-color: var(--accent);
+    border-width: 2px;
+  }
+
+  .layout-thumb {
+    height: 110px;
+    background: #EDE9E2;
+    padding: 14px;
+  }
+
+  .layout-thumb.grid-style {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .layout-thumb.scroll-style {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .layout-thumb.card-style {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+  }
+
+  .thumb-block {
+    background: #D4CFC6;
+    border-radius: 5px;
+  }
+
+  .layout-info { padding: 14px; border-top: 1px solid var(--border); }
+
+  .layout-dir {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+
+  .layout-desc { font-size: 13px; color: var(--ink-muted); line-height: 1.5; }
+
+  .selected-badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+    background: var(--accent-light);
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin-bottom: 5px;
+  }
+
+  /* SCENARIOS */
+  .scenarios-grid {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--white);
+    margin: 24px 0;
+  }
+
+  .scenario-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .scenario-row:last-child { border-bottom: none; }
+
+  .scenario-num { font-size: 12px; color: var(--ink-faint); font-weight: 500; min-width: 20px; padding-top: 2px; }
+  .scenario-name { font-size: 15px; font-weight: 500; color: var(--ink); flex: 1; }
+
+  .scenario-level {
+    font-size: 12px;
+    color: var(--ink-muted);
+    background: #F0EDE7;
+    border-radius: 4px;
+    padding: 2px 8px;
+    white-space: nowrap;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+
+  /* SCREENS */
+  .screens {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 28px 0;
+  }
+
+  .screen-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .screen-visual {
+    height: 150px;
+    background: var(--ink);
+    display: flex;
+    flex-direction: column;
+    padding: 14px 12px;
+    gap: 7px;
+  }
+
+  .sv-header { height: 8px; background: rgba(255,255,255,0.3); border-radius: 4px; width: 60%; }
+
+  .sv-score {
+    font-family: 'Lora', serif;
+    color: white;
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    margin: 6px 0;
+  }
+
+  .sv-card-row { display: flex; gap: 5px; }
+  .sv-mini-card { flex: 1; height: 38px; background: rgba(255,255,255,0.12); border-radius: 5px; }
+  .sv-form-row { height: 24px; background: rgba(255,255,255,0.12); border-radius: 4px; margin-bottom: 5px; }
+
+  .sv-result-top { display: flex; justify-content: space-between; align-items: center; }
+  .sv-score-before { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .sv-score-after { font-family: 'Lora', serif; color: white; font-size: 22px; font-weight: 600; }
+  .sv-delta { font-size: 13px; color: #FF7A5A; font-weight: 500; }
+
+  .sv-bar { height: 40px; background: rgba(255,255,255,0.08); border-radius: 5px; margin-top: 6px; overflow: hidden; position: relative; }
+  .sv-bar-fill { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(255,255,255,0.25); border-radius: 5px; width: 70%; }
+
+  .screen-info { padding: 14px; border-top: 1px solid var(--border); }
+  .screen-name { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+  .screen-desc { font-size: 12px; color: var(--ink-muted); line-height: 1.5; }
+
+  /* FILE CARD */
+  .file-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 28px 0;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .file-card-left { display: flex; align-items: center; gap: 14px; }
+
+  .file-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--accent-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .file-name { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+  .file-meta { font-size: 13px; color: var(--ink-faint); }
+  .file-link { font-size: 13px; font-weight: 500; color: var(--accent); white-space: nowrap; }
+
+  /* OUTCOME */
+  .outcome-lead {
+    background: var(--ink);
+    border-radius: 12px;
+    padding: 32px;
+    margin: 28px 0 20px;
+  }
+
+  .outcome-lead h3 {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: white;
+    margin: 0 0 12px;
+    line-height: 1.3;
+  }
+
+  .outcome-lead > p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .ic-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .ic-item {
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 16px 0;
+  }
+
+  .metric-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+  }
+
+  .metric-tag {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .metric-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 6px;
+    line-height: 1.35;
+  }
+
+  .metric-why { font-size: 13px; color: var(--ink-muted); line-height: 1.55; }
+
+  /* REFLECTION */
+  .reflection {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 40px;
+  }
+
+  .reflection-items {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 28px;
+  }
+
+  .reflection-item {
+    border-left: 2px solid var(--border);
+    padding-left: 20px;
+  }
+
+  .reflection-item strong {
+    display: block;
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .reflection-item p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--ink-muted);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 580px) {
+    .layouts, .screens, .problem-grid, .ic-list { grid-template-columns: 1fr; }
+    .problem-card.full-width { grid-column: auto; }
+    .meta-strip { grid-template-columns: 1fr 1fr; }
+    .reflection { padding: 28px 22px; }
+    .file-card { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <p class="hero-tag">Case Study &nbsp;·&nbsp; Experian Credit App</p>
+  <h1>What if your users could test a financial decision before they make it?</h1>
+  <p class="hero-sub">We built a credit score simulator — from zero — with no existing mobile pattern to reference, for a product that had to feel effortless despite modelling eight distinct financial scenarios.</p>
+</header>
+
+<div class="meta-strip">
+  <div class="meta-item">
+    <p class="meta-label">Role</p>
+    <p class="meta-value">UI / UX Designer</p>
+  </div>
+  <div class="meta-item">
+    <p class="meta-label">Timeline</p>
+    <p class="meta-value">2026</p>
+  </div>
+  <div class="meta-item">
+    <p class="meta-label">Team</p>
+    <p class="meta-value">2 Designers</p>
+  </div>
+  <div class="meta-item">
+    <p class="meta-label">Platform</p>
+    <p class="meta-value">Mobile App</p>
+  </div>
+  <div class="meta-item">
+    <p class="meta-label">Status</p>
+    <p class="meta-value"><span class="status-dot"></span>In Development</p>
+  </div>
+</div>
+
+
+<!-- PROBLEM -->
+<section>
+  <p class="section-label">The Problem</p>
+  <h2>People know their score. Nobody tells them what it actually responds to.</h2>
+
+  <div class="problem-grid">
+    <div class="problem-card">
+      <p class="card-tag">Who they are</p>
+      <h4>Credit-aware Indians on the Experian app</h4>
+      <p>Salaried users, credit card holders, loan borrowers. Financially literate — but score-illiterate. They track their number without understanding what drives it.</p>
+    </div>
+    <div class="problem-card">
+      <p class="card-tag">What they're trying to do</p>
+      <h4>Make a smart credit decision — without breaking something</h4>
+      <p>Should I take a new loan? Pay off this card first? What if I miss one EMI? Users want to understand the impact of a decision before they make it.</p>
+    </div>
+    <div class="problem-card">
+      <p class="card-tag">Where they're stuck</p>
+      <h4>The app answers "what." Never "what if."</h4>
+      <p>The product shows a score and its history. But there's no sandbox to test decisions in. A score dip sends users into guesswork. The gap between seeing a number and knowing what to do with it is entirely unaddressed.</p>
+    </div>
+    <div class="problem-card full-width">
+      <p class="card-tag">Why the business is solving this</p>
+      <h4>A simulator that turns curious users into confident ones — and confident ones into paying ones</h4>
+      <p>If a user can see that "closing this tradeline drops your score by 34 points," they're far more likely to act on a recommendation, engage with premium features, and trust the product enough to convert. The simulator isn't just educational — it's a retention and conversion lever built on top of a real utility.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- DISCOVERY -->
+<section>
+  <p class="section-label">Discovery</p>
+  <h2>We looked for a reference. There wasn't one.</h2>
+  <p>Before opening Figma, we ran a competitive audit across the credit and personal finance landscape. The goal was simple: find a mobile pattern that handled multi-scenario simulation, understand how it worked, and figure out how to do it better.</p>
+  <p>There was no pattern to find. Only a single competitor offered anything close — and it lived exclusively on web. No app had solved this on mobile. We weren't adapting a known interaction model. We were the first to define what it even looks like on a phone screen.</p>
+
+  <div class="pull-quote">
+    <p>"There was no design to look at and say 'we'll do better than this.' We had to decide what 'better' even meant."</p>
+  </div>
+
+  <p>That was both the pressure and the opportunity. Every structural decision — information hierarchy, input model, score reveal, multi-select behaviour — was ours to set from scratch. Whatever shipped would become the bar others reference next.</p>
+</section>
+
+
+<!-- SCOPE -->
+<section>
+  <p class="section-label">Scope</p>
+  <h2>Eight scenarios. One simulator. Zero room for complexity to show.</h2>
+  <p>The product team defined eight simulation scenarios — each modelling a real financial behaviour and its projected credit impact. Some operated at the portfolio level, affecting the full credit profile. Others targeted individual tradelines, like a specific loan or card account.</p>
+
+  <div class="scenarios-grid">
+    <div class="scenario-row"><span class="scenario-num">01</span><span class="scenario-name">Miss an EMI or Credit Card Bill Payment</span><span class="scenario-level">Portfolio</span></div>
+    <div class="scenario-row"><span class="scenario-num">02</span><span class="scenario-name">Change Your Credit Utilization</span><span class="scenario-level">Tradeline / Portfolio</span></div>
+    <div class="scenario-row"><span class="scenario-num">03</span><span class="scenario-name">Get a New Loan or Credit Card</span><span class="scenario-level">Tradeline</span></div>
+    <div class="scenario-row"><span class="scenario-num">04</span><span class="scenario-name">Opt for Settlement</span><span class="scenario-level">Portfolio</span></div>
+    <div class="scenario-row"><span class="scenario-num">05</span><span class="scenario-name">Clear All Overdues</span><span class="scenario-level">Portfolio</span></div>
+    <div class="scenario-row"><span class="scenario-num">06</span><span class="scenario-name">Close a Tradeline</span><span class="scenario-level">Tradeline</span></div>
+    <div class="scenario-row"><span class="scenario-num">07</span><span class="scenario-name">Close Your Oldest Credit Card</span><span class="scenario-level">Tradeline</span></div>
+    <div class="scenario-row"><span class="scenario-num">08</span><span class="scenario-name">Clear Outstanding Amount / Repay Loan</span><span class="scenario-level">Tradeline</span></div>
+  </div>
+
+  <p>Each scenario had its own set of inputs — EMI counts, outstanding balances, utilization percentages, loan types, tenure. Eight distinct forms. The design problem was to make all of it feel like one coherent, frictionless product.</p>
+</section>
+
+
+<!-- IDEATION -->
+<section>
+  <p class="section-label">Ideation</p>
+  <h2>Two designers. Parallel directions. One client decision.</h2>
+  <p>We ran a parallel ideation sprint — each designer independently developed a full wireframe variation of the simulator. The intent wasn't to compete; it was to surface fundamentally different structural approaches, so the decision we took to the client was reasoned, not arbitrary.</p>
+
+  <div class="ideation-block">
+    <div class="layer-header">
+      <span class="layer-pill system">System thinking</span>
+      <div class="layer-line"></div>
+    </div>
+    <p style="margin-bottom: 20px;">Three principles anchored both directions at the product level — regardless of what the individual screens looked like:</p>
+    <div class="principles">
+      <div class="principle-card">
+        <p class="principle-number">Principle 01</p>
+        <h4>Reduce cognitive load</h4>
+        <p>The simulator does the heavy lifting. The UI surfaces only what the user needs at each step — nothing more.</p>
+      </div>
+      <div class="principle-card">
+        <p class="principle-number">Principle 02</p>
+        <h4>Reversible by default</h4>
+        <p>Selecting a scenario should feel as light as deselecting it. No dead ends, no commitment anxiety.</p>
+      </div>
+      <div class="principle-card">
+        <p class="principle-number">Principle 03</p>
+        <h4>Motion as feedback</h4>
+        <p>Every selection updates the projected score visibly. Motion communicates change — it isn't decoration.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ideation-block">
+    <div class="layer-header">
+      <span class="layer-pill screen">Screen thinking</span>
+      <div class="layer-line"></div>
+    </div>
+    <div class="screen-level-block">
+      <p>At the screen level, the key decision was the home layout — how users first encounter and choose scenarios. This is where the two wireframes diverged most sharply, and where the client's final call was made.</p>
+      <p>My direction was selected. The feedback pointed to two things: the scenario cards were immediately scannable, and toggling scenarios on and off felt natural without any learning curve.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- UI EXPLORATION -->
+<section>
+  <p class="section-label">UI Exploration</p>
+  <h2>Three layout directions before the right one appeared</h2>
+  <p>With wireframes approved, we moved to visual design. The home screen — the first thing a user encounters when they open the simulator — went through three distinct directions before we landed.</p>
+
+  <div class="layouts">
+    <div class="layout-card">
+      <div class="layout-thumb grid-style">
+        <div class="thumb-block" style="height: 36px;"></div>
+        <div class="thumb-block" style="height: 36px;"></div>
+        <div class="thumb-block" style="height: 36px;"></div>
+        <div class="thumb-block" style="height: 36px;"></div>
+      </div>
+      <div class="layout-info">
+        <p class="layout-dir">Direction 01</p>
+        <p class="layout-desc">Dashboard-inspired grid. Felt too heavy for a single-purpose tool.</p>
+      </div>
+    </div>
+    <div class="layout-card">
+      <div class="layout-thumb scroll-style">
+        <div class="thumb-block" style="height: 28px; width: 100%;"></div>
+        <div class="thumb-block" style="height: 28px; width: 100%;"></div>
+        <div class="thumb-block" style="height: 28px; width: 100%;"></div>
+      </div>
+      <div class="layout-info">
+        <p class="layout-dir">Direction 02</p>
+        <p class="layout-desc">Large scroll cards. Room for each scenario, but the full range stayed hidden.</p>
+      </div>
+    </div>
+    <div class="layout-card selected">
+      <div class="layout-thumb card-style">
+        <div class="thumb-block" style="height: 40px;"></div>
+        <div class="thumb-block" style="height: 40px;"></div>
+        <div class="thumb-block" style="height: 40px;"></div>
+        <div class="thumb-block" style="height: 40px;"></div>
+      </div>
+      <div class="layout-info">
+        <span class="selected-badge">Selected</span>
+        <p class="layout-dir">Direction 03</p>
+        <p class="layout-desc">Compact, glanceable cards. All scenarios visible at once. Multi-select native to the grid.</p>
+      </div>
+    </div>
+  </div>
+
+  <p>Direction 03 solved the core tension: users needed to survey all options before committing to any. A compact card grid let them understand the full scope of the simulator before making a single tap. We built everything on top of this layout.</p>
+</section>
+
+
+<!-- FLOW -->
+<section>
+  <p class="section-label">Flow Architecture</p>
+  <h2>Three screens, each with one job</h2>
+  <p>The entire experience collapsed into three screens — no extra confirmation states, no unnecessary layers. Each screen has a single purpose and a clean handoff to the next.</p>
+
+  <div class="screens">
+    <div class="screen-card">
+      <div class="screen-visual">
+        <div class="sv-header"></div>
+        <p class="sv-score">765</p>
+        <div class="sv-card-row">
+          <div class="sv-mini-card"></div>
+          <div class="sv-mini-card"></div>
+        </div>
+        <div class="sv-card-row">
+          <div class="sv-mini-card"></div>
+          <div class="sv-mini-card"></div>
+        </div>
+      </div>
+      <div class="screen-info">
+        <p class="screen-name">Screen 1 — Home</p>
+        <p class="screen-desc">Baseline score, scenario grid, multi-select</p>
+      </div>
+    </div>
+    <div class="screen-card">
+      <div class="screen-visual">
+        <div class="sv-header" style="width: 45%; margin-bottom: 4px;"></div>
+        <div class="sv-form-row"></div>
+        <div class="sv-form-row" style="width: 80%;"></div>
+        <div class="sv-form-row"></div>
+        <div style="margin-top: auto; height: 24px; background: var(--accent); border-radius: 4px; opacity: 0.85;"></div>
+      </div>
+      <div class="screen-info">
+        <p class="screen-name">Screen 2 — Scenario Input</p>
+        <p class="screen-desc">Account selection, variable inputs, simulate CTA</p>
+      </div>
+    </div>
+    <div class="screen-card">
+      <div class="screen-visual">
+        <div class="sv-result-top">
+          <div>
+            <p class="sv-score-before">765 current</p>
+            <p class="sv-score-after">731</p>
+          </div>
+          <p class="sv-delta">▼ −34</p>
+        </div>
+        <div class="sv-bar">
+          <div class="sv-bar-fill"></div>
+        </div>
+        <div class="sv-form-row" style="width: 90%; height: 14px; margin-top: 10px; opacity: 0.4;"></div>
+        <div class="sv-form-row" style="width: 70%; height: 14px; opacity: 0.3;"></div>
+      </div>
+      <div class="screen-info">
+        <p class="screen-name">Screen 3 — Results</p>
+        <p class="screen-desc">Score delta, factor impact, education tips</p>
+      </div>
+    </div>
+  </div>
+
+  <p>The result screen was where the design did its most important work. Not just a number — a delta with direction, a percentile shift in plain language, and education tips that turned a simulation into a lesson. The animated score bar was Principle 03, made visible.</p>
+
+  <div class="pull-quote">
+    <p>"The result screen is the moment the product earns trust — by showing the user not just what changed, but why."</p>
+  </div>
+</section>
+
+
+<!-- CRAFT — CONCISE, LEADER TONE -->
+<section>
+  <p class="section-label">From Design to Build</p>
+  <h2>The prototype spoke for itself. The specs made sure the build did too.</h2>
+  <p>The final design included a full dark mode — not a colour flip, but a screen-by-screen pass for legibility, contrast, and component integrity across both themes. An interactive prototype captured the complete experience: disclaimer drawer, scenario toggling, animated score reveal, and loader states with contextual microcopy.</p>
+  <p>The prototype ended up being used directly by the client for internal stakeholder walkthroughs. It didn't need a walkthrough — it explained itself. A complete design spec covering interactions, component behaviour, animation timing, and edge cases ensured the engineering team's implementation decisions were obvious, not open-ended.</p>
+
+  <a class="file-card" href="#" onclick="return false;">
+    <div class="file-card-left">
+      <div class="file-icon">⬡</div>
+      <div>
+        <p class="file-name">Score Simulator — Design File</p>
+        <p class="file-meta">Figma &nbsp;·&nbsp; Wireframes, UI, Prototype, Handoff Specs</p>
+      </div>
+    </div>
+    <span class="file-link">View file →</span>
+  </a>
+</section>
+
+
+<!-- OUTCOME -->
+<section>
+  <p class="section-label">Outcome</p>
+  <h2>A 0-to-1 project, owned end to end</h2>
+
+  <div class="outcome-lead">
+    <h3>What this project required that most don't ask for at once</h3>
+    <p>There was no prior art, no design system to extend, no PM defining edge cases. I worked independently across every layer of the product — from problem framing and competitive audit, through wireframes, visual exploration, prototyping, and a full developer handoff. The kind of project where if the structural decisions at wireframe stage were wrong, everything built on top would have had to be dismantled. They weren't.</p>
+    <div class="ic-list">
+      <div class="ic-item">Defined the interaction model for a feature type that didn't exist on mobile</div>
+      <div class="ic-item">Ran parallel wireframe exploration and presented directional trade-offs to the client</div>
+      <div class="ic-item">Explored three layout directions and led the decision that everything else was built on</div>
+      <div class="ic-item">Built a prototype the client used independently for internal stakeholder sign-off</div>
+      <div class="ic-item">Delivered a full dark mode review and annotated handoff spec for engineering</div>
+      <div class="ic-item">Structured edge cases, error states, and animation behaviour without a brief to reference</div>
+    </div>
+  </div>
+
+  <p style="margin-bottom: 24px;">Projects like this build a specific kind of design muscle — the ability to zoom in and out fast. To think like a lead when the structure needs to be right, and like a strong IC when the detail needs to be precise. That's what this project gave me, and it's the eye I'll carry into every project that comes next.</p>
+
+  <p class="section-label" style="margin-bottom: 16px;">Metrics we'll track post-launch</p>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <p class="metric-tag">Engagement</p>
+      <p class="metric-name">Simulator session depth</p>
+      <p class="metric-why">Are users running one simulation or several? Multi-scenario engagement signals the feature is working as designed, not just as a one-tap curiosity.</p>
+    </div>
+    <div class="metric-card">
+      <p class="metric-tag">Retention</p>
+      <p class="metric-name">Return visits to the simulator</p>
+      <p class="metric-why">Does a user come back after their first run? Repeat usage is the clearest signal that the tool has genuine utility — not just novelty.</p>
+    </div>
+    <div class="metric-card">
+      <p class="metric-tag">Conversion</p>
+      <p class="metric-name">CTA tap rate post-simulation</p>
+      <p class="metric-why">How many users act on a recommendation after seeing their result? This is the business's core conversion signal from the simulator.</p>
+    </div>
+    <div class="metric-card">
+      <p class="metric-tag">Revenue</p>
+      <p class="metric-name">Simulation to premium upgrade rate</p>
+      <p class="metric-why">Users who simulate are high-intent. Tracking how many move to paid features reveals whether the simulator builds trust or just traffic.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- REFLECTION -->
+<div class="reflection">
+  <p class="section-label">Reflection</p>
+  <h2>What leading a 0-to-1 project changes in how you think</h2>
+
+  <div class="reflection-items">
+    <div class="reflection-item">
+      <strong>You develop the ability to zoom in and out fast.</strong>
+      <p>Working across every layer — product framing, system structure, screen-level detail, and dev specs — in a single project trains you to switch modes without losing either view. That's a different muscle than being handed a well-scoped screen to design.</p>
+    </div>
+    <div class="reflection-item">
+      <strong>Decisions that look small at wireframe stage are load-bearing.</strong>
+      <p>The multi-select model, the compact card layout, the three-screen flow — all set before any visual design began. Getting these right early is what lets you move fast later. Getting them wrong means rebuilding from the middle.</p>
+    </div>
+    <div class="reflection-item">
+      <strong>Exploration only earns its cost if you can explain the trade-offs.</strong>
+      <p>Three layout directions, two wireframe approaches — none of it was about showing volume of work. It was about making the final decision obvious to the client. The value of exploration is the clarity it creates at the decision point.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
