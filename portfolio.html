@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jayesh Thite — UX Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --yellow:  #F5E642;
+  --pink:    #F2B8C6;
+  --mint:    #B8F0D8;
+  --green:   #C8F0A0;
+  --lavender:#D8C8F5;
+  --peach:   #FFD8B0;
+  --dark:    #1A3A2A;
+  --white:   #FAFAF8;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--dark);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  background: var(--yellow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 3px solid var(--dark);
+}
+
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--dark);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dark);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: opacity 0.2s;
+}
+.nav-links a:hover { opacity: 0.6; }
+
+.nav-cta {
+  background: var(--dark);
+  color: var(--yellow) !important;
+  padding: 10px 20px;
+  border-radius: 100px;
+  font-weight: 500 !important;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--yellow);
+  padding: 80px 48px 100px;
+  text-align: center;
+  border-bottom: 3px solid var(--dark);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-tag {
+  display: inline-block;
+  background: var(--dark);
+  color: var(--yellow);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 100px;
+  margin-bottom: 32px;
+}
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(56px, 10vw, 120px);
+  font-weight: 800;
+  line-height: 0.95;
+  color: var(--dark);
+  letter-spacing: -0.04em;
+  max-width: 1000px;
+  margin: 0 auto 32px;
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: 0.75em;
+}
+
+.hero-sub {
+  font-size: 18px;
+  color: var(--dark);
+  opacity: 0.7;
+  max-width: 480px;
+  margin: 0 auto 48px;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: var(--dark);
+  color: var(--yellow);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 14px 32px;
+  border-radius: 100px;
+  text-decoration: none;
+  border: 2px solid var(--dark);
+  transition: background 0.2s, color 0.2s;
+}
+.btn-primary:hover { background: transparent; color: var(--dark); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--dark);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 14px 32px;
+  border-radius: 100px;
+  text-decoration: none;
+  border: 2px solid var(--dark);
+  transition: background 0.2s, color 0.2s;
+}
+.btn-secondary:hover { background: var(--dark); color: var(--yellow); }
+
+.hero-blob {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  bottom: -120px;
+  right: -80px;
+}
+
+/* ── MARQUEE ── */
+.marquee-strip {
+  background: var(--dark);
+  padding: 16px 0;
+  overflow: hidden;
+  border-bottom: 3px solid var(--dark);
+}
+
+.marquee-track {
+  display: flex;
+  gap: 0;
+  animation: marquee 20s linear infinite;
+  white-space: nowrap;
+}
+
+.marquee-item {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--yellow);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0 32px;
+  flex-shrink: 0;
+}
+
+.marquee-dot {
+  color: var(--pink);
+  padding: 0 8px;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── ABOUT ── */
+.about {
+  background: var(--mint);
+  padding: 100px 48px;
+  border-bottom: 3px solid var(--dark);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.about-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dark);
+  opacity: 0.5;
+  margin-bottom: 20px;
+}
+
+.about h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 800;
+  color: var(--dark);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 24px;
+}
+
+.about p {
+  font-size: 17px;
+  color: var(--dark);
+  opacity: 0.7;
+  line-height: 1.8;
+  margin-bottom: 16px;
+  font-weight: 400;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--dark);
+  border: 2px solid var(--dark);
+}
+
+.stat-card {
+  background: var(--white);
+  padding: 32px;
+  transition: background 0.2s;
+}
+.stat-card:hover { background: var(--yellow); }
+
+.stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 52px;
+  font-weight: 800;
+  color: var(--dark);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--dark);
+  opacity: 0.6;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* ── WORK SECTION HEADER ── */
+.work-header {
+  background: var(--pink);
+  padding: 80px 48px 60px;
+  border-bottom: 3px solid var(--dark);
+  text-align: center;
+}
+
+.work-header h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 800;
+  color: var(--dark);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+
+.work-header p {
+  font-size: 17px;
+  color: var(--dark);
+  opacity: 0.6;
+  margin-top: 20px;
+  font-weight: 400;
+}
+
+/* ── CASE STUDY CARDS ── */
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.case-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 3px solid var(--dark);
+  min-height: 480px;
+  text-decoration: none;
+  color: var(--dark);
+  transition: opacity 0.2s;
+}
+.case-card:hover .case-arrow { transform: translate(4px, -4px); }
+
+.case-card:nth-child(even) { direction: rtl; }
+.case-card:nth-child(even) > * { direction: ltr; }
+
+.case-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  border-right: 3px solid var(--dark);
+  font-size: 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.case-card:nth-child(1) .case-visual { background: var(--lavender); }
+.case-card:nth-child(2) .case-visual { background: var(--peach); border-right: none; border-left: 3px solid var(--dark); }
+.case-card:nth-child(3) .case-visual { background: var(--green); }
+.case-card:nth-child(4) .case-visual { background: var(--yellow); border-right: none; border-left: 3px solid var(--dark); }
+
+.case-visual-inner {
+  width: 200px;
+  height: 200px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.5);
+  border: 2px solid rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72px;
+}
+
+.case-info {
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--white);
+}
+
+.case-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.case-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 100px;
+  border: 1.5px solid var(--dark);
+  color: var(--dark);
+  opacity: 0.6;
+}
+
+.case-info h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 800;
+  color: var(--dark);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+}
+
+.case-info p {
+  font-size: 16px;
+  color: var(--dark);
+  opacity: 0.6;
+  line-height: 1.75;
+  font-weight: 400;
+  flex: 1;
+  margin-bottom: 40px;
+}
+
+.case-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.case-year {
+  font-size: 13px;
+  color: var(--dark);
+  opacity: 0.4;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.case-arrow {
+  width: 48px;
+  height: 48px;
+  background: var(--dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+
+.case-arrow svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--yellow);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── SKILLS ── */
+.skills {
+  background: var(--green);
+  padding: 100px 48px;
+  border-bottom: 3px solid var(--dark);
+}
+
+.skills-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 60px;
+  gap: 32px;
+}
+
+.skills-header h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 800;
+  color: var(--dark);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+}
+
+.skills-header p {
+  font-size: 16px;
+  color: var(--dark);
+  opacity: 0.6;
+  max-width: 320px;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--dark);
+  border: 2px solid var(--dark);
+}
+
+.skill-card {
+  background: var(--white);
+  padding: 36px;
+  transition: background 0.2s;
+}
+.skill-card:hover { background: var(--yellow); }
+
+.skill-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.skill-card h4 {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+
+.skill-card p {
+  font-size: 14px;
+  color: var(--dark);
+  opacity: 0.6;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+/* ── PROCESS ── */
+.process {
+  background: var(--lavender);
+  padding: 100px 48px;
+  border-bottom: 3px solid var(--dark);
+}
+
+.process h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 800;
+  color: var(--dark);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  background: var(--dark);
+  border: 2px solid var(--dark);
+}
+
+.process-step {
+  background: var(--white);
+  padding: 40px 32px;
+  transition: background 0.2s;
+}
+.process-step:hover { background: var(--mint); }
+
+.step-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--dark);
+  opacity: 0.12;
+  line-height: 1;
+  margin-bottom: 20px;
+  letter-spacing: -0.04em;
+}
+
+.process-step h4 {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+
+.process-step p {
+  font-size: 14px;
+  color: var(--dark);
+  opacity: 0.6;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+/* ── TESTIMONIAL ── */
+.testimonial {
+  background: var(--dark);
+  padding: 100px 48px;
+  border-bottom: 3px solid var(--dark);
+  text-align: center;
+}
+
+.testimonial blockquote {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 800;
+  color: var(--yellow);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  max-width: 900px;
+  margin: 0 auto 40px;
+}
+
+.testimonial cite {
+  font-size: 14px;
+  color: rgba(255,255,255,0.4);
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── CONTACT ── */
+.contact {
+  background: var(--peach);
+  padding: 100px 48px;
+  border-bottom: 3px solid var(--dark);
+  text-align: center;
+}
+
+.contact h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 800;
+  color: var(--dark);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: 24px;
+}
+
+.contact p {
+  font-size: 18px;
+  color: var(--dark);
+  opacity: 0.6;
+  max-width: 440px;
+  margin: 0 auto 48px;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.contact-links {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--dark);
+  color: var(--yellow);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 14px 28px;
+  border-radius: 100px;
+  text-decoration: none;
+  border: 2px solid var(--dark);
+  transition: background 0.2s, color 0.2s;
+}
+.contact-link:hover { background: transparent; color: var(--dark); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--dark);
+  padding: 32px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--yellow);
+  letter-spacing: -0.02em;
+}
+
+.footer-copy {
+  font-size: 13px;
+  color: rgba(255,255,255,0.3);
+  font-weight: 400;
+}
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+              transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  .hero { padding: 60px 24px 80px; }
+  .about { grid-template-columns: 1fr; padding: 64px 24px; gap: 48px; }
+  .work-header { padding: 60px 24px 48px; }
+  .case-card { grid-template-columns: 1fr; min-height: auto; direction: ltr !important; }
+  .case-visual { border-right: none !important; border-left: none !important; border-bottom: 3px solid var(--dark); min-height: 240px; }
+  .case-info { padding: 36px 24px; }
+  .skills { padding: 64px 24px; }
+  .skills-header { flex-direction: column; align-items: flex-start; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .process { padding: 64px 24px; }
+  .process-steps { grid-template-columns: 1fr 1fr; }
+  .testimonial { padding: 64px 24px; }
+  .contact { padding: 64px 24px; }
+  footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Jayesh Thite</a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact" class="nav-cta">Let's Talk</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-blob"></div>
+  <p class="hero-tag reveal">Available for freelance &amp; full-time</p>
+  <h1 class="reveal reveal-delay-1">Designing<br><em>experiences</em><br>that stick.</h1>
+  <p class="hero-sub reveal reveal-delay-2">UX Designer crafting intuitive, human-centred products — from research and wireframes to polished, pixel-perfect interfaces.</p>
+  <div class="hero-btns reveal reveal-delay-3">
+    <a href="#work" class="btn-primary">View My Work</a>
+    <a href="#contact" class="btn-secondary">Get In Touch</a>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track">
+    <span class="marquee-item">UX Design <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">User Research <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Interaction Design <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Prototyping <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Design Systems <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Figma <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Mobile &amp; Web <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">UX Design <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">User Research <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Interaction Design <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Prototyping <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Design Systems <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Figma <span class="marquee-dot">✦</span></span>
+    <span class="marquee-item">Mobile &amp; Web <span class="marquee-dot">✦</span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div>
+    <p class="about-label reveal">About me</p>
+    <h2 class="reveal reveal-delay-1">I design with purpose, not just pixels.</h2>
+    <p class="reveal reveal-delay-2">I'm a UX Designer who believes great design starts with understanding people — their goals, frustrations, and the moments where a product either earns trust or loses it.</p>
+    <p class="reveal reveal-delay-3">I work across the full design process: from discovery and research, through wireframes and prototyping, to high-fidelity UI and developer handoff. I've shipped 0-to-1 products, redesigned complex flows, and built design systems from scratch.</p>
+  </div>
+  <div class="about-stats reveal reveal-delay-2">
+    <div class="stat-card">
+      <p class="stat-num">3+</p>
+      <p class="stat-label">Years of UX Design experience</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-num">12+</p>
+      <p class="stat-label">Products designed end to end</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-num">8+</p>
+      <p class="stat-label">Industries worked across</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-num">100%</p>
+      <p class="stat-label">Commitment to the user</p>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<div class="work-header" id="work">
+  <h2 class="reveal">Selected<br>Work.</h2>
+  <p class="reveal reveal-delay-1">A few projects I'm proud of.</p>
+</div>
+
+<div class="work-grid">
+
+  <a class="case-card reveal" href="password.html">
+    <div class="case-visual">
+      <div class="case-visual-inner">💳</div>
+    </div>
+    <div class="case-info">
+      <div>
+        <div class="case-tags">
+          <span class="case-tag">Mobile App</span>
+          <span class="case-tag">Fintech</span>
+          <span class="case-tag">0→1</span>
+        </div>
+        <h3>Credit Score Simulator</h3>
+        <p>Designed a first-of-its-kind mobile credit score simulator — letting users test financial decisions before making them. No prior mobile pattern existed. We defined it from scratch.</p>
+      </div>
+      <div class="case-bottom">
+        <span class="case-year">2026</span>
+        <span class="case-arrow">
+          <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </span>
+      </div>
+    </div>
+  </a>
+
+  <a class="case-card reveal reveal-delay-1" href="#">
+    <div class="case-visual">
+      <div class="case-visual-inner">🏥</div>
+    </div>
+    <div class="case-info">
+      <div>
+        <div class="case-tags">
+          <span class="case-tag">Web App</span>
+          <span class="case-tag">Healthcare</span>
+          <span class="case-tag">Redesign</span>
+        </div>
+        <h3>Patient Onboarding Redesign</h3>
+        <p>Reduced drop-off by 40% by redesigning a complex multi-step onboarding flow for a healthcare platform. Turned a 12-screen process into a calm, guided 5-step experience.</p>
+      </div>
+      <div class="case-bottom">
+        <span class="case-year">2025</span>
+        <span class="case-arrow">
+          <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </span>
+      </div>
+    </div>
+  </a>
+
+  <a class="case-card reveal" href="#">
+    <div class="case-visual">
+      <div class="case-visual-inner">📦</div>
+    </div>
+    <div class="case-info">
+      <div>
+        <div class="case-tags">
+          <span class="case-tag">Design System</span>
+          <span class="case-tag">B2B SaaS</span>
+        </div>
+        <h3>Design System from Zero</h3>
+        <p>Built a complete design system for a B2B SaaS product — tokens, components, documentation, and usage guidelines. Cut design-to-dev handoff time by half.</p>
+      </div>
+      <div class="case-bottom">
+        <span class="case-year">2025</span>
+        <span class="case-arrow">
+          <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </span>
+      </div>
+    </div>
+  </a>
+
+  <a class="case-card reveal reveal-delay-1" href="#">
+    <div class="case-visual">
+      <div class="case-visual-inner">🛒</div>
+    </div>
+    <div class="case-info">
+      <div>
+        <div class="case-tags">
+          <span class="case-tag">E-commerce</span>
+          <span class="case-tag">Mobile</span>
+          <span class="case-tag">Research</span>
+        </div>
+        <h3>Checkout Flow Optimisation</h3>
+        <p>Led end-to-end UX research and redesign of a checkout flow for a D2C brand. Identified 6 friction points through usability testing and resolved them in a single design sprint.</p>
+      </div>
+      <div class="case-bottom">
+        <span class="case-year">2024</span>
+        <span class="case-arrow">
+          <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </span>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+  <div class="skills-header">
+    <h2 class="reveal">What I<br>bring.</h2>
+    <p class="reveal reveal-delay-1">A full-stack design toolkit — from the first user interview to the final handoff spec.</p>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <span class="skill-icon">🔍</span>
+      <h4>User Research</h4>
+      <p>Interviews, usability testing, competitive audits, and synthesis. I find the real problem before designing the solution.</p>
+    </div>
+    <div class="skill-card reveal reveal-delay-1">
+      <span class="skill-icon">🗺️</span>
+      <h4>Information Architecture</h4>
+      <p>Card sorting, sitemaps, user flows. I make sure the structure makes sense before a single screen is designed.</p>
+    </div>
+    <div class="skill-card reveal reveal-delay-2">
+      <span class="skill-icon">✏️</span>
+      <h4>Wireframing</h4>
+      <p>Low and mid-fidelity wireframes that explore structure and interaction without getting distracted by polish.</p>
+    </div>
+    <div class="skill-card reveal">
+      <span class="skill-icon">🎨</span>
+      <h4>Visual Design</h4>
+      <p>High-fidelity UI with strong typography, colour, and layout. Design that looks as good as it works.</p>
+    </div>
+    <div class="skill-card reveal reveal-delay-1">
+      <span class="skill-icon">⚡</span>
+      <h4>Prototyping</h4>
+      <p>Interactive Figma prototypes that communicate motion, flow, and micro-interactions to stakeholders and engineers.</p>
+    </div>
+    <div class="skill-card reveal reveal-delay-2">
+      <span class="skill-icon">📐</span>
+      <h4>Design Systems</h4>
+      <p>Scalable component libraries, token structures, and documentation that keep teams aligned and moving fast.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <h2 class="reveal">How I work.</h2>
+  <div class="process-steps">
+    <div class="process-step reveal">
+      <p class="step-num">01</p>
+      <h4>Discover</h4>
+      <p>Research, interviews, and competitive analysis. Understand the user and the problem deeply before touching Figma.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-1">
+      <p class="step-num">02</p>
+      <h4>Define</h4>
+      <p>Synthesise findings into clear problem statements, user journeys, and design principles that anchor every decision.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <p class="step-num">03</p>
+      <h4>Design</h4>
+      <p>Wireframes, explorations, and high-fidelity UI. Iterate fast, test early, and refine until it's right.</p>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <p class="step-num">04</p>
+      <h4>Deliver</h4>
+      <p>Annotated specs, interactive prototypes, and handoff documentation that make the build obvious, not open-ended.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial">
+  <blockquote class="reveal">"Jayesh doesn't just design screens — he designs outcomes. Every decision is grounded in the user and the business."</blockquote>
+  <cite class="reveal reveal-delay-1">— Product Manager, Fintech Client</cite>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <h2 class="reveal">Let's build<br>something.</h2>
+  <p class="reveal reveal-delay-1">Open to full-time roles, freelance projects, and interesting collaborations. Let's talk.</p>
+  <div class="contact-links reveal reveal-delay-2">
+    <a href="mailto:jayesh@example.com" class="contact-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Email Me
+    </a>
+    <a href="https://linkedin.com/in/jayesh-thite" target="_blank" class="contact-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://jayesh-thite.github.io/Portfolio/" target="_blank" class="contact-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      Case Study
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-name">Jayesh Thite</span>
+  <span class="footer-copy">© 2026 — UX Designer</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.hero .reveal').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), i * 120);
+    });
+  });
+</script>
+</body>
+</html>
